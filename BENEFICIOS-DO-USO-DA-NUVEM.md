@@ -5,11 +5,12 @@
 
 - **Alta disponibilidade:** Capacidade de manter os serviços disponíveis mesmo em caso de falhas. É importante se atentar pas os tipos de SLA (Service Level Agreement) oferecidos pelos provedores de nuvem, que garantem um determinado nível de disponibilidade.
 A seguir, uma tabela com os tipos de SLA e seus respectivos tempos de inatividade, por semana, mês e ano de disponibilidade oferecidas pelo provedor Azure em Fevereiro de 2026:
-| SLA (%) | Tempo de inatividade por semana | Tempo de inatividade por mês | Tempo de inatividade por ano |
-|---------|---------------------------------|------------------------------|-----------------------------|
-| 99.9%   | 10.08 minutos                   | 43.2 minutos                    | 8.76 horas                   |
-| 99.99%  | 1.008 minutos                   | 4.32 minutos                    | 52.56 minutos                   |
-| 99.999% | 0.1008 minutos                   | 0.432 minutos                    | 5.256 minutos                   |
+
+|SLA (%)|Tempo de inatividade por semana|Tempo de inatividade por mês|Tempo de inatividade por ano
+|--|--|--|--|
+|99.9% | 10.08 minutos | 43.2 minutos | 8.76 horas |
+|99.99% | 1.008 minutos | 4.32 minutos | 52.56 minutos |
+|99.999% | 0.1008 minutos | 0.432 minutos | 5.256 minutos |
 
 - **Confiabilidade:** Provedores de nuvem investem em infraestrutura robusta e descentralizada para garantir a confiabilidade e resiliência dos serviços.
 
