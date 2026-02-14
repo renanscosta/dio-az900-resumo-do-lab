@@ -1,8 +1,7 @@
 # dio-az900-resumo-do-lab
-Repositório para entrega do desafio relacionado a aula de laboratório
 
-Durante a aula foi feita uma demostração do painel da Azure, explorando a categorização dos serviços e customização de layout.
-Houve navegação em alguma categorias para explorar detalhes e mostrar a infinidade de serviços que a Azure disponibuliza.
+Documento com resumo do conteúdo do curso AZ-900 da Microsoft, ministrado pela DIO.
+Instrutora: Valeria Baptista.
 
 # Tipos de nuvem
 
@@ -10,7 +9,7 @@ Houve navegação em alguma categorias para explorar detalhes e mostrar a infini
 
 **Nuvem pública:** Recursos compartilhados que podem ser utilizados por pessoas ou organizações. Normalmente disponibilizados por cloud providers (Azure, AWS, OCI, GCP).
 
-**Nuvem privada (on promise):** Normalmente recurso totalmente gerenciado por uma empresa, onde a mesa se torna responsável pela infraestrutura e gerenciamento de recursos.
+**Nuvem privada (on premise):** Normalmente recurso totalmente gerenciado por uma empresa, onde a mesma se torna responsável pela infraestrutura e gerenciamento de recursos.
 
 **Nuvem híbrida:** É a mescla da nuvem pública com a privada, ou seja, uma empresa pode oferecer uma nuvem privada para sistemas críticos e para recursos menos críticos, ou operações emergenciais, utilizar a nuvem pública.
 
