@@ -9,12 +9,12 @@
 - Quanto mais disponíbilidade for necessária, mais caro é;
 - Nem todas as regiões possuem zonas de disponibilidade, e nem todos os serviços estão disponíveis em todas as zonas de disponibilidade. Portanto, é importante verificar a disponibilidade dos serviços e das zonas de disponibilidade na região escolhida antes de planejar a arquitetura da aplicação;
 
-Alguns tipos de serviços nas zonas de disponibilidade:
+**Alguns tipos de serviços nas zonas de disponibilidade:**
 - **Serviços de zona**: São serviços que são implantados em uma única zona de disponibilidade, o que significa que eles não têm alta disponibilidade. Esses serviços são adequados para cargas de trabalho que não exigem alta disponibilidade ou para ambientes de desenvolvimento e teste. Exemplos incluem máquinas virtuais (VMs) e bancos de dados SQL.
 - **Serviços com redundância de zona**: São serviços que são implantados em várias zonas de disponibilidade dentro da mesma região, o que significa que eles têm alta disponibilidade. Esses serviços são adequados para cargas de trabalho críticas que exigem alta disponibilidade e resiliência. Exemplos incluem Azure App Service, Azure SQL Database e Azure Kubernetes Service (AKS).
 - **Serviços não regionais**: São serviços que são implantados globalmente e não estão vinculados a uma região específica. Esses serviços são adequados para cargas de trabalho que exigem alta disponibilidade global e resiliência. Exemplos incluem Azure Cosmos DB, Azure Active Directory e Azure Traffic Manager.
 
-![Imagem](imagens/zona_disponibilidade.png)
+![Imagem](imagens/zonas_disponibilidade.png)
 imagem retirada do site oficial do Azure: https://azure.microsoft.com/pt-br/global-infrastructure/availability-zones/
 
 
