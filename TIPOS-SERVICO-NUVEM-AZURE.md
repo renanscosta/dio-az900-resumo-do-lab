@@ -9,4 +9,3 @@
 ## Modelo de responsabilidade compartilhada ##
 
 ![Imagem](imagens/modelo-responsabilidade-compartilhada.png)
-
