@@ -2,52 +2,71 @@
 
 ## Região e Zona de Disponibilidade ##
 
-- **Região:** Localização geográfica onde os serviços de nuvem estão disponíveis. Cada região é composta por vários data centers, e as empresas podem escolher a região mais próxima para reduzir a latência e melhorar o desempenho, mas quanto mais perto a região estiver do usuário final, melhor será a experiência. Essa escolha pode influenciar em custos, pois os preços podem variar entre regiões, e também pode afetar a conformidade regulatória, já que algumas regiões podem ter requisitos específicos de conformidade.
+- **Região:** Localização geográfica onde os serviços de nuvem estão disponíveis. Cada região é composta por vários data centers, e as empresas podem escolher a região mais próxima para reduzir a latência e melhorar o desempenho. Essa escolha pode influenciar em custos (preços variam entre regiões) e em conformidade regulatória.
+    - Exemplo: Aplicação para usuários no Brasil costuma usar Brazil South para reduzir latência.
 
-- **Zona de Disponibilidade:** Subdivisão dentro de uma região que é isolada de falhas em outras zonas. Cada zona de disponibilidade é composta por um ou mais data centers (preferencialmente no mínimo três para garantir alta disponibilidade), e as empresas podem distribuir seus recursos entre diferentes zonas para garantir alta disponibilidade e resiliência. 
+- **Zona de Disponibilidade:** Subdivisão dentro de uma região com data centers fisicamente separados e energia, rede e resfriamento independentes. Distribuir recursos entre zonas aumenta alta disponibilidade e tolerância a falhas.
+    - Exemplo: Duas VMs em zonas diferentes com load balancer.
 
-- Quanto mais disponíbilidade for necessária, mais caro é;
-- Nem todas as regiões possuem zonas de disponibilidade, e nem todos os serviços estão disponíveis em todas as zonas de disponibilidade. Portanto, é importante verificar a disponibilidade dos serviços e das zonas de disponibilidade na região escolhida antes de planejar a arquitetura da aplicação;
+- Quanto mais disponibilidade for necessária, maior tende a ser o custo;
+- Nem todas as regiões possuem zonas de disponibilidade, e nem todos os serviços estão disponíveis em todas as zonas. Verifique antes de planejar a arquitetura;
 
 **Alguns tipos de serviços nas zonas de disponibilidade:**
-- **Serviços de zona**: São serviços que são implantados em uma única zona de disponibilidade, o que significa que eles não têm alta disponibilidade. Esses serviços são adequados para cargas de trabalho que não exigem alta disponibilidade ou para ambientes de desenvolvimento e teste. Exemplos incluem máquinas virtuais (VMs) e bancos de dados SQL.
-- **Serviços com redundância de zona**: São serviços que são implantados em várias zonas de disponibilidade dentro da mesma região, o que significa que eles têm alta disponibilidade. Esses serviços são adequados para cargas de trabalho críticas que exigem alta disponibilidade e resiliência. Exemplos incluem Azure App Service, Azure SQL Database e Azure Kubernetes Service (AKS).
-- **Serviços não regionais**: São serviços que são implantados globalmente e não estão vinculados a uma região específica. Esses serviços são adequados para cargas de trabalho que exigem alta disponibilidade global e resiliência. Exemplos incluem Azure Cosmos DB, Azure Active Directory e Azure Traffic Manager.
+- **Serviços de zona**: Implantados em uma zona específica. A alta disponibilidade depende da arquitetura do cliente.
+    - Exemplo: Uma VM em zona 1 sem réplica em outra zona.
+- **Serviços com redundância de zona**: Implantados com réplicas em várias zonas, oferecendo alta disponibilidade intrarregional.
+    - Exemplo: Azure Kubernetes Service (AKS) com nós distribuídos em zonas.
+- **Serviços não regionais**: Serviços globais que não ficam presos a uma única região.
+    - Exemplo: Microsoft Entra ID e Azure Traffic Manager.
+
+### Comparativo: Região x Zona x Par de Região
+
+| Conceito | O que é | Para que serve | Exemplo prático |
+|---|---|---|---|
+| Região | Área geográfica com vários data centers | Reduzir latência e atender requisitos de conformidade | Hospedar um app no Brazil South para usuários no Brasil |
+| Zona de disponibilidade | Data centers isolados dentro da mesma região | Alta disponibilidade e tolerância a falhas | VMs em zonas diferentes com balanceador |
+| Par de região | Duas regiões emparelhadas na mesma geografia | Recuperação de desastres e continuidade regional | GRS replica dados para a região pareada |
 
 ![Imagem](imagens/zonas-disponibilidade.png)
 imagem retirada do site oficial do Azure: https://azure.microsoft.com/pt-br/global-infrastructure/availability-zones/
 
 
 ### Pares de região ###
-- São regiões emparelhadas dentro da mesma geografia, projetadas para fornecer recuperação de desastres e alta disponibilidade. Os pares de região permitem que as empresas repliquem seus dados e aplicativos entre as regiões emparelhadas, garantindo que, em caso de falha em uma região, os serviços possam ser rapidamente restaurados na região emparelhada. Os pares de região são projetados para fornecer uma recuperação de desastres eficiente, com replicação de dados assíncrona e failover automático. 
+- São regiões emparelhadas dentro da mesma geografia, projetadas para recuperação de desastres e alta disponibilidade regional. Os pares permitem replicação assíncrona para outra região.
+    - Exemplo: Storage GRS replica dados da região primária para a região pareada.
 
-- Alguns serviços precisam ser configurados pelo cliente para aproveitar os benefícios dos pares de região, como o Azure Site Recovery, que permite replicar máquinas virtuais entre regiões emparelhadas para garantir a continuidade dos negócios em caso de falha. Outros serviços, como o Azure SQL Database, oferecem opções de replicação geográfica integrada que permitem replicar bancos de dados entre regiões emparelhadas para garantir alta disponibilidade e resiliência.
+- Alguns serviços exigem configuração do cliente para usar pares de região (ex.: Azure Site Recovery). Outros oferecem replicação geográfica integrada (ex.: Azure SQL Database).
 
-- Nem todas as regiões possuem pares de região, e nem todos os serviços estão disponíveis em todas as regiões. Portanto, é importante verificar a disponibilidade dos serviços e dos pares de região na região escolhida antes de planejar a arquitetura da aplicação.
+- Nem todas as regiões possuem pares de região, e nem todos os serviços estão disponíveis em todas as regiões. Verifique antes de planejar a arquitetura.
 
-- Algumas regiões fazem backup bi direcional, ou seja, cada região é o par da outra, enquanto outras regiões fazem backup unidirecional, onde uma região é o par da outra, mas a outra região não é o par da primeira. Por exemplo, a região Leste dos EUA é o par da região Oeste dos EUA, e a região Oeste dos EUA é o par da região Leste dos EUA, enquanto a região Leste dos EUA 2 é o par da região Leste dos EUA, mas a região Leste dos EUA não é o par da região Leste dos EUA 2.
+- Em geral, pares de região são bidirecionais dentro da mesma geografia. O mapeamento exato depende da geografia e deve ser consultado na documentação oficial.
 
 ![Imagem](imagens/par-regioes.png)
 imagem retirada do site oficial do Azure: https://azure.microsoft.com/pt-br/global-infrastructure/geographies/
 
 
 ## Regiões Soberanas ##
-- São regiões que atendem a requisitos específicos de conformidade e regulamentação, como requisitos de soberania de dados, onde os dados devem permanecer dentro de um país ou região específica. As regiões soberanas são projetadas para atender às necessidades de clientes que operam em setores altamente regulamentados, como governo, saúde e finanças, onde a conformidade com regulamentos específicos é essencial.
+- São regiões que atendem a requisitos específicos de conformidade e soberania de dados, mantendo os dados dentro de um país ou região.
+    - Exemplo: Órgãos públicos que exigem dados hospedados apenas no território nacional.
 
 ### US DoD Central, US Government, US Gov Virginia, US Gov Arizona ###
-- São regiões soberanas projetadas para atender às necessidades do governo dos Estados Unidos, incluindo o Departamento de Defesa (DoD) e outras agências governamentais. Essas regiões oferecem recursos e serviços específicos para atender aos requisitos de segurança e conformidade do governo dos EUA, como FedRAMP, DoD SRG e CJIS. Essas regiões são isoladas das regiões comerciais do Azure e são operadas por pessoal de segurança do governo dos EUA, garantindo que os dados e recursos dos clientes sejam protegidos de acordo com os padrões de segurança do governo dos EUA.
+- Regiões soberanas para o governo dos EUA, com requisitos de conformidade como FedRAMP e CJIS. São isoladas das regiões comerciais.
+    - Exemplo: Aplicações de defesa e segurança nacional.
 
 ### Azure China 21Vianet ###
-- É uma região soberana operada pela 21Vianet, uma empresa de internet chinesa, que atende às necessidades de clientes na China, onde os dados devem permanecer dentro do país. A região Azure China 21Vianet oferece recursos e serviços específicos para atender aos requisitos de conformidade e regulamentação da China, como a Lei de Segurança Cibernética da China. Essa região é isolada das regiões comerciais do Azure e é operada pela 21Vianet, garantindo que os dados e recursos dos clientes sejam protegidos de acordo com os padrões de segurança da China.
+- Região soberana operada pela 21Vianet para atender requisitos de residência de dados na China e leis locais.
+    - Exemplo: Empresas que precisam hospedar dados de usuários chineses dentro do país.
 
 ## Grupos de Recursos ##
-- São contêineres lógicos que agrupam recursos relacionados, facilitando a organização, gerenciamento e monitoramento dos recursos na nuvem. Os grupos de recursos permitem que as empresas organizem seus recursos de forma lógica, com base em critérios como projeto, departamento ou ambiente, facilitando a gestão e o monitoramento dos recursos. Os grupos de recursos também permitem que as empresas apliquem políticas de governança e controle de acesso de forma centralizada, garantindo que os recursos sejam gerenciados de forma eficiente e segura. Além disso, os grupos de recursos também permitem que as empresas monitorem o uso e os custos dos recursos de forma centralizada, facilitando a otimização dos custos na nuvem.
+- São contêineres lógicos que agrupam recursos relacionados, facilitando organização, gerenciamento e monitoramento. Ajudam na governança e no controle de custos (OpEx).
+    - Exemplo: Grupo de recursos "app-loja-prod" com App Service, Banco e Storage.
 
-    - Os recursos só podem estar em um grupo de recursos, mas um grupo de recursos pode conter vários recursos. Os grupos de recursos também podem conter outros grupos de recursos, permitindo uma hierarquia de organização dos recursos na nuvem.
-    - Os recursos podem estar em regiões diferentes, mas devem estar no mesmo grupo de recursos. Isso permite que as empresas organizem seus recursos de forma lógica, independentemente da localização geográfica dos recursos.
+    - Os recursos só podem estar em um único grupo de recursos, e um grupo pode conter vários recursos. Grupos de recursos não contêm outros grupos.
+    - Recursos podem estar em regiões diferentes, mesmo dentro do mesmo grupo.
 
 ## Assinaturas ##
-- São unidades de faturamento e gerenciamento que permitem que as empresas organizem seus recursos e controlem seus custos na nuvem. As assinaturas permitem que as empresas criem e gerenciem seus recursos de forma eficiente, com base em critérios como projeto, departamento ou ambiente, facilitando a gestão e o monitoramento dos recursos. As assinaturas também permitem que as empresas apliquem políticas de governança e controle de acesso de forma centralizada, garantindo que os recursos sejam gerenciados.
+- São unidades de faturamento e gerenciamento. Permitem organizar recursos e controlar custos por projeto, departamento ou ambiente.
+    - Exemplo: Assinaturas separadas para "Marketing-Prod" e "TI-Prod".
 
 - Uma conta do Azure pode conter várias assinaturas, e cada assinatura pode conter vários grupos de recursos. As assinaturas também podem ser associadas a diferentes formas de pagamento, como cartão de crédito, fatura ou contrato corporativo, permitindo que as empresas controlem seus custos de forma eficiente. Além disso, as assinaturas também permitem que as empresas monitorem o uso e os custos dos recursos de forma centralizada, facilitando a otimização dos custos na nuvem.
 
@@ -109,10 +128,43 @@ Por isso, você cria mais assinaturas quando precisa:
 **Billing boundary → “Quem paga o quê” (fatura separada por assinatura).**
 ​**Access control boundary → “Quem pode mexer em quê” (permissões separadas por assinatura).**
 ​
-​## Grupos de Gerenciamento ##
+## Grupos de Gerenciamento ##
 
-- São contêineres lógicos que permitem organizar e gerenciar várias assinaturas de forma hierárquica. Os grupos de gerenciamento permitem que as empresas organizem suas assinaturas de forma lógica, com base em critérios como projeto, departamento ou ambiente, facilitando a gestão e o monitoramento das assinaturas. Os grupos de gerenciamento também permitem que as empresas apliquem políticas de governança e controle de acesso de forma centralizada, garantindo que as assinaturas sejam gerenciadas de forma eficiente e segura. Além disso, os grupos de gerenciamento também permitem que as empresas monitorem o uso e os custos das assinaturas de forma centralizada, facilitando a otimização dos custos na nuvem.
-- Um grupo de gerenciamento pode conter várias assinaturas, e uma assinatura pode estar em apenas um grupo de gerenciamento. Os grupos de gerenciamento também podem conter outros grupos de gerenciamento, permitindo uma hierarquia de organização das assinaturas na nuvem.
+- São contêineres lógicos para organizar assinaturas em uma hierarquia de governança. Permitem aplicar políticas e RBAC em escala.
+    - Exemplo: Grupo de gerenciamento "Corporativo" com os grupos "Financeiro" e "Produtos".
+- Um grupo de gerenciamento pode conter várias assinaturas, e uma assinatura só pode estar em um grupo. Grupos de gerenciamento podem conter outros grupos.
 
 ![Imagem](imagens/grupos-gerenciamento.png)
 imagem retirada do site oficial do Azure: https://azure.microsoft.com/pt-br/overview/management-groups/
+
+## Hierarquia de governança (ordem correta)
+- Entidades de gerenciamento -> Assinaturas -> Grupos de recursos -> Recursos.
+    - Exemplo: Grupo de gerenciamento "Corporativo" > Assinatura "TI-Prod" > Grupo de recursos "app-loja-prod" > App Service.
+
+# Dicas para prova:
+- Região é localização geográfica; zona de disponibilidade são data centers isolados dentro da mesma região (alta disponibilidade).
+- Pares de região servem para recuperação de desastres com replicação assíncrona.
+- Grupos de recursos não podem conter outros grupos; assinaturas são limite de cobrança e acesso.
+- Em provas, escolha a opção que atende ao requisito com o menor nível necessário de custo/complexidade.
+
+# Questões de exemplo para prova:
+1. Em qual nível da hierarquia de governança se aplicam políticas para várias assinaturas ao mesmo tempo?
+    - a) Região
+    - b) Zona de disponibilidade
+    - c) Grupo de gerenciamento **(correta)**
+    - d) Grupo de recursos
+    - Explicação: Políticas em escala são aplicadas em grupos de gerenciamento, que abrangem várias assinaturas.
+
+2. Qual afirmação descreve melhor uma zona de disponibilidade?
+    - a) Regiões emparelhadas para failover automático
+    - b) Data centers isolados dentro da mesma região **(correta)**
+    - c) Regiões soberanas para conformidade governamental
+    - d) Serviços globais sem região definida
+    - Explicação: Zonas são data centers fisicamente separados dentro de uma mesma região.
+
+3. Qual item representa a ordem correta da hierarquia de governança no Azure?
+    - a) Assinaturas -> Entidades de gerenciamento -> Recursos -> Grupos de recursos
+    - b) Entidades de gerenciamento -> Assinaturas -> Grupos de recursos -> Recursos **(correta)**
+    - c) Grupos de recursos -> Assinaturas -> Recursos -> Entidades de gerenciamento
+    - d) Recursos -> Grupos de recursos -> Assinaturas -> Entidades de gerenciamento
+    - Explicação: A ordem segue do nível mais alto (entidades de gerenciamento) até os recursos.

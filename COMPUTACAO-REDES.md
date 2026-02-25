@@ -1,99 +1,163 @@
 # Máquinas Virtuais (VMs)
 
 ## O que são VMs?
-Máquinas Virtuais (VMs) são ambientes de computação isolados que simulam uma máquina física. Elas permitem que múltiplos sistemas operacionais e aplicações sejam executados em um único hardware físico, proporcionando flexibilidade e eficiência no uso dos recursos.
-Fornecem IaaS (Infrastructure as a Service), permitindo que os usuários criem, configurem e gerenciem suas próprias máquinas virtuais.
+Máquinas Virtuais (VMs) são ambientes de computação isolados que simulam uma máquina física. Elas permitem que múltiplos sistemas operacionais e aplicações sejam executados em um único hardware físico.
 
-## Conjuntos de dimensionamento
-Conjuntos de dimensionamento são grupos de VMs idênticas que podem ser gerenciadas como uma única unidade. Eles permitem a escalabilidade automática, onde o número de VMs pode ser ajustado automaticamente com base na demanda, garantindo desempenho e disponibilidade.
+- **Modelo de serviço:** IaaS (Infrastructure as a Service). O cliente gerencia SO, aplicações e dados; a Microsoft gerencia a infraestrutura.
+- **Exemplo:** Migrar um servidor local para uma VM no Azure mantendo total controle sobre configurações.
+- **Benefícios:** Escalabilidade, elasticidade e alta disponibilidade (com configuração adequada).
+
+## Conjuntos de dimensionamento (Scale Sets)
+Grupos de VMs idênticas que escalam automaticamente com base na demanda.
+- **Exemplo:** Aumentar de 2 para 10 VMs durante Black Friday, reduzir após o pico.
+- **Benefício:** Elasticidade e agilidade para lidar com variações de carga.
 
 ## Conjuntos de disponibilidade
-Conjuntos de disponibilidade são grupos de VMs que garantem alta disponibilidade. Eles distribuem as VMs em diferentes domínios de falha e atualização, minimizando o impacto de falhas de hardware ou atualizações planejadas, garantindo que pelo menos uma VM esteja sempre disponível.
+Grupos de VMs distribuídas para garantir alta disponibilidade em caso de falhas.
+- **Domínio de falha:** Separa VMs em racks/servidores diferentes para evitar falha em cascata.
+- **Domínio de atualização:** Aplica atualizações gradualmente, mantendo parte do sistema disponível.
+- **Exemplo:** 3 VMs em 3 domínios diferentes: se uma falha, 2 continuam rodando.
 
-- **Domínio de falha**: Agrupa VMs em diferentes racks ou servidores para evitar que uma falha de hardware afete todas as VMs.
-- **Domínio de atualização**: Agrupa VMs para que as atualizações sejam aplicadas a um grupo de VMs de cada vez, garantindo que nem todas as VMs sejam atualizadas simultaneamente, o que pode causar indisponibilidade.
+### Tabela Comparativa: Scale Sets x Availability Sets
+
+| Aspecto | Conjuntos de dimensionamento | Conjuntos de disponibilidade |
+|---|---|---|
+| Propósito | Escalabilidade automática | Alta disponibilidade |
+| Número de VMs | Aumenta/diminui dinamicamente | Quantidade fixa |
+| Caso de uso | Atender picos de demanda | Tolerar falhas de hardware |
+| Exemplo | App Web em Black Friday | Banco de dados crítico |
 
 ![Image](/imagens/df-da.png)
 
 # Área de Trabalho Virtual
-Área de Trabalho Virtual é um ambiente de computação que permite aos usuários acessar um desktop virtual hospedado na nuvem ou em um data center. Ele oferece uma experiência de desktop completa, permitindo que os usuários acessem seus aplicativos e dados de qualquer lugar, usando qualquer dispositivo.
-É uma mistura de PaaS e IaaS, onde os usuários têm controle sobre o ambiente de desktop virtual, mas a infraestrutura subjacente é gerenciada pelo provedor de serviços.
+Ambiente de desktop hospedado na nuvem acessível de qualquer dispositivo. Mistura de PaaS e IaaS onde o cliente controla a experiência do usuário, mas a infraestrutura é gerenciada.
 
-O acesso por ser:
-- **Pool de VMs**: Os usuários compartilham um conjunto de VMs, onde cada VM pode ser usada por vários usuários, proporcionando uma solução econômica para ambientes com muitos usuários.
-- **VM dedicada**: Cada usuário tem sua própria VM dedicada, garantindo desempenho e personalização, ideal para usuários com necessidades específicas ou que exigem maior desempenho.
+- **Pool compartilhado:** Vários usuários compartilham VMs, reduzindo custos. Exemplo: Call center com 100 operadores em 20 VMs.
+- **VM dedicada:** Cada usuário tem sua própria VM. Exemplo: Equipe de design que precisa de alto desempenho.
+- **Exemplo de uso:** Trabalhadores remotos acessam ambiente corporativo de home office em qualquer dispositivo.
 
 # Containers
-Containers são uma forma leve de virtualização que permite empacotar uma aplicação e suas dependências em um ambiente isolado. Eles compartilham o mesmo sistema operacional subjacente, mas cada container é executado de forma independente, proporcionando portabilidade e eficiência.
-Fornecem PaaS (Platform as a Service), permitindo que os desenvolvedores criem, implantem e gerenciem aplicações sem se preocupar com a infraestrutura subjacente.
+Formalismo leve de virtualização que empacota uma aplicação com suas dependências. Compartilham o SO do host, oferecendo eficiência e portabilidade.
 
-## Instâncias de Container
-Instâncias de Container são uma forma de executar containers sem a necessidade de gerenciar a infraestrutura subjacente. Elas permitem que os usuários criem e executem containers de forma rápida e fácil, proporcionando uma solução escalável e eficiente para aplicações baseadas em containers.
+- **Modelo de serviço:** PaaS. A Microsoft gerencia orquestração e infraestrutura.
+- **Exemplo:** App Node.js em um container Docker roda igual em qualquer lugar (laptop, servidor, nuvem).
+- **Benefício:** Agilidade e portabilidade.
 
-## Aplicativos de Container
-Semelhante às instâncias de container, mas com a capacidade de orquestrar e gerenciar múltiplos containers como um único aplicativo. Eles permitem que os usuários criem, implantem e gerenciem aplicativos baseados em containers de forma eficiente, proporcionando uma solução escalável e flexível para aplicações complexas.
+## Instâncias de Container do Azure
+Executar um único container rapidamente sem gerenciar infraestrutura.
+- **Exemplo:** Deploy de um container com um script Python para processar arquivos.
+- **Caso de uso:** Tarefas simples, curtas e isoladas.
 
-## Orquestração de Containers
-Orquestração de Containers é o processo de gerenciar e coordenar múltiplos containers para garantir que eles funcionem juntos de forma eficiente. Ferramentas como Kubernetes e Docker Swarm são usadas para orquestrar containers, permitindo que os usuários escalem, monitorem e gerenciem seus aplicativos baseados em containers de forma eficaz.
-O Azure oferece serviços como o Azure Kubernetes Service (AKS) para facilitar a orquestração de containers na nuvem, proporcionando uma solução gerenciada para implantar e gerenciar aplicativos baseados em containers.
+## Azure Kubernetes Service (AKS)
+Orquestrador de containers que gerencia múltiplos containers como um sistema. Skaliza, monitora e orquestra automaticamente.
+- **Exemplo:** App com 1 container de API, 1 de banco, 1 de cache escalando conforme demanda.
+- **Benefício:** Orquestração automática, tolerância a falhas, escalabilidade.
 
-# Functions
-Functions são uma forma de computação sem servidor (serverless) que permite aos desenvolvedores executar código em resposta a eventos sem se preocupar com a infraestrutura subjacente. Elas permitem que os usuários criem e executem funções de forma rápida e fácil, proporcionando uma solução escalável e eficiente para aplicações baseadas em eventos.
-Fornecem PaaS (Platform as a Service), permitindo que os desenvolvedores criem, implantem e gerenciem funções sem se preocupar com a infraestrutura subjacente.
-Os recursos de Functions são cobrados com base no número de execuções e no tempo de execução, proporcionando uma solução econômica para aplicações baseadas em eventos.
+# Azure Functions
+Computação serverless que executa código em resposta a eventos sem gerenciar infraestrutura.
 
-# Serviços de Aplicativos
-Serviços de Aplicativos são uma plataforma gerenciada que permite aos desenvolvedores criar, implantar e gerenciar aplicativos web e móveis de forma eficiente. Eles fornecem uma solução escalável e flexível para aplicativos baseados em nuvem.
-Fornecem PaaS (Platform as a Service), permitindo que os desenvolvedores criem, implantem e gerenciem aplicativos sem se preocupar com a infraestrutura subjacente.
+- **Modelo de serviço:** PaaS. Você escreve apenas a função; a Microsoft gerencia o resto.
+- **Cobrança:** Por execução e tempo de processamento. Ideal para cargas esporádicas.
+- **Exemplo:** Função disparada quando um arquivo é enviado para Storage, processa e salva resultado.
+- **Benefício:** Agilidade, custos otimizados (paga só pelo que usa), escalabilidade automática.
 
-## Tipos de Serviços de Aplicativos
-- **Aplicativos Web**
-O Serviço de Aplicativo inclui suporte completo para a hospedagem de aplicativos Web usando ASP.NET, ASP.NET Core, Java, Ruby, Node.js, PHP ou Python. Você pode escolher Windows ou Linux como sistema operacional do host.
-- **Aplicativos de API**
-Da mesma forma como se hospeda um site, você pode criar APIs Web baseadas em REST usando a linguagem e a estrutura que você quiser. Receba o suporte completo do Swagger e a capacidade de empacotar e publicar sua API no Azure Marketplace. Os aplicativos produzidos podem ser consumidos por qualquer cliente baseado em HTTP ou em HTTPS.
-- **Aplicativos Móveis**
-Você pode usar o recurso do WebJobs para executar um script (.cmd, .bat, PowerShell ou Bash) ou um programa (.exe, Java, PHP, Python ou Node.js) no mesmo contexto de um aplicativo Web, aplicativo de API ou aplicativo móvel. Eles também podem ser agendados ou executados por um gatilho. O WebJobs geralmente é usado para executar tarefas em segundo plano como parte da lógica do aplicativo.
-- **WebJobs**
-Use o recurso Aplicativos Móveis do Serviço de Aplicativo para criar rapidamente um back-end para aplicativos iOS e Android. Com apenas algumas ações no portal do Azure, você pode:
+# Azure App Service
+Plataforma PaaS gerenciada para hospedar aplicativos web, API, mobile e WebJobs.
 
-- Armazenar dados de aplicativo móvel em um Banco de Dados SQL baseado em nuvem.
-- Autentique clientes em provedores sociais comuns, como MSA, Google, X e Facebook.
-- Enviar notificações por push.
-- Executar lógica de back-end personalizada em C# ou Node.js.
-- No lado do aplicativo móvel, há suporte do SDK para aplicativos nativos para iOS, Android, Xamarin e React.
+- **Modelo de serviço:** PaaS. Você gerencia código; Azure gerencia infraestrutura, SO e routing.
+- **Suporte:** ASP.NET, Node.js, Python, Java, Ruby, PHP em Windows ou Linux.
+- **Exemplo:** App web em Node.js rodando em escala automática com HTTPS e domínio customizado.
+- **Benefício:** Agilidade, escalabilidade, integração com ferramentas DevOps.
+
+## Tipos de Cargas no App Service
+
+| Tipo | O que é | Exemplo |
+|---|---|---|
+| **App Web** | Site ou aplicação web | Loja online em ASP.NET Core |
+| **App de API** | API REST | API de cotação de moedas |
+| **App Móvel** | Backend para app mobile | Backend de app iOS/Android |
+| **WebJobs** | Tarefas em segundo plano | Processar fila de e-mails |
+
+- **WebJobs:** Executam scripts ou programas em background. Podem rodar contínuos ou agendados.
+  - Exemplo: Job que processa imagens enviadas por usuários a cada 15 minutos.
 
 # Azure Virtual Network (VNet)
-Azure Virtual Network (VNet) é um serviço de rede virtual que permite criar redes privadas na nuvem Azure. Ele fornece isolamento e controle sobre a rede, permitindo que os usuários criem sub-redes, configurem regras de segurança e estabeleçam conexões seguras entre suas redes locais e a nuvem Azure.
+Rede privada na nuvem Azure com isolamento, segmentação e controle sobre conectividade.
 
-## Isolamento e segmentação de rede
-O Azure VNet permite criar sub-redes dentro de uma rede virtual, proporcionando isolamento e segmentação de rede. Isso permite que os usuários organizem seus recursos de forma lógica e controlem o acesso entre diferentes partes da rede, melhorando a segurança e a eficiência.
+- **Isolamento:** Recursos em uma VNet não são acessíveis de fora sem configuração explícita.
+- **Sub-redes:** Segmentam a rede para organizar recursos e aplicar regras de segurança.
+- **Exemplo:** VNet com sub-rede para VMs de frontend, outra para banco de dados.
 
-## Conexão entre serviços
-O Azure VNet permite estabelecer conexões seguras entre diferentes serviços e recursos na nuvem Azure. Isso inclui conexões entre VMs, bancos de dados, serviços de aplicativos e outros recursos, permitindo que os usuários criem arquiteturas de rede complexas e seguras para suas aplicações.
+## Grupo de Segurança de Rede (NSG)
+Firewall virtual que controla tráfego de entrada e saída.
+- **Regras:** Definem quem pode acessar o quê (porta, protocolo, IP origem).
+- **Exemplo:** Bloquear SSH vindo de qualquer lugar, permitir apenas de IP corporativo.
 
-## Roteamento e segurança
-O Azure VNet oferece recursos avançados de roteamento e segurança, permitindo que os usuários configurem regras de segurança, firewalls e grupos de segurança de rede para proteger seus recursos e controlar o tráfego de rede. Isso inclui a capacidade de criar regras de entrada e saída, configurar VPNs e estabelecer conexões seguras entre redes locais e a nuvem Azure, garantindo a segurança e a confiabilidade das aplicações e dados na nuvem.
-
-## Conexão entre redes virtuais
-O emparelhamento de redes virtuais é um recurso do Azure VNet que permite conectar duas ou mais redes virtuais dentro da mesma região ou em regiões diferentes. Isso permite que os recursos em diferentes redes virtuais se comuniquem entre si como se estivessem na mesma rede, proporcionando uma solução eficiente para arquiteturas de rede complexas e distribuídas na nuvem Azure.
+## Emparelhamento de VNets
+Conecta duas VNets para comunicação privada (mesma região ou cross-region).
+- **Exemplo:** VNet "Produção" se comunica com VNet "Desenvolvimento".
+- **Benefício:** Integração de ambientes sem usar internet pública.
 
 ## Gateway de VPN
-O Gateway de VPN é um serviço do Azure VNet que permite estabelecer conexões seguras entre redes locais e a nuvem Azure usando VPNs (Virtual Private Networks). Ele suporta diferentes tipos de VPNs, incluindo VPNs de site a site, VPNs de ponto a site e VPNs de rede virtual, proporcionando uma solução flexível e segura para conectar redes locais à nuvem Azure e garantir a segurança e a confiabilidade das conexões de rede.
-- **VPN baseada em política**: Usa regras de segurança para definir as rotas e as conexões, proporcionando uma solução mais simples para cenários de rede menos complexos.
+Permite conexão segura entre rede local e VNet Azure via internet pública criptografada.
 
-- **VPN baseada em rota**: Usa o protocolo BGP para roteamento dinâmico, permitindo que as rotas sejam aprendidas e propagadas automaticamente entre as redes locais e a nuvem Azure.
-    Use um gateway de VPN baseado em rota se precisar de qualquer um dos seguintes tipos de conectividade:
-    - Conexões entre redes virtuais
-    - Conexões ponto a site
-    - Conexões multissite
-    - Coexistência com um gateway do Azure ExpressRoute
+- **VPN Site-a-Site:** Conecta toda a rede local ao Azure. Exemplo: Filial da empresa com Azure.
+- **VPN Ponto-a-Site:** Conecta usuários individuais ao Azure. Exemplo: Trabalho remoto seguro.
+- **Exemplo:** Empresa com datacenter local criando túnel VPN seguro para produção no Azure.
 
-### Cenários de alta disponibilidade
-O Azure VNet oferece opções de alta disponibilidade para garantir que as conexões de rede sejam resilientes e confiáveis. 
-- **Gateway de VPN ativo-ativo**: Configura dois ou mais gateways de VPN em modo ativo-ativo para garantir que, se um gateway falhar, o tráfego seja automaticamente redirecionado para o gateway restante, proporcionando alta disponibilidade e continuidade de negócios.
-- **Gateway de VPN ativo-passivo**: Configura um gateway de VPN em modo ativo-passivo, onde um gateway é o principal e o outro é o backup. Se o gateway principal falhar, o gateway de backup assume automaticamente, garantindo alta disponibilidade e continuidade de negócios para as conexões de rede entre as redes locais e a nuvem Azure. Em casos de interrupções não planejadas, as conexões são restauradas em cerca de 90 segundos, proporcionando uma solução resiliente para conexões de rede críticas.
-- **Gateway de VPN com redundância geográfica**: Configura gateways de VPN em diferentes regiões para garantir que, se uma região inteira ficar indisponível, as conexões de rede possam ser redirecionadas para outra região, proporcionando alta disponibilidade e resiliência para conexões de rede críticas entre as redes locais e a nuvem Azure.
+### Tabela Comparativa: VPN vs ExpressRoute
 
-## ExpressRoute
-O Azure ExpressRoute é um serviço que permite estabelecer conexões privadas e dedicadas entre as redes locais e a nuvem Azure. Ele oferece uma alternativa mais rápida, segura e confiável em comparação com as conexões de internet pública, proporcionando uma solução ideal para empresas que exigem alta performance e segurança para suas conexões de rede com a nuvem Azure. O ExpressRoute é ideal para cenários que exigem alta largura de banda, baixa latência e conexões seguras entre as redes locais e a nuvem Azure, como migração de dados em larga escala, backup e recuperação de desastres, e aplicações críticas para os negócios. Ele oferece opções de conectividade flexíveis, incluindo conexões de peering privado, conexões de peering público e conexões de peering de Microsoft, permitindo que as empresas escolham a melhor opção para suas necessidades de conectividade com a nuvem Azure.
+| Aspecto | VPN | ExpressRoute |
+|---|---|---|
+| Conexão | Internet pública criptografada | Linha privada dedicada |
+| Latência | Variável | Consistente e baixa |
+| Largura de banda | Até ~1.25 Gbps | Até 100 Gbps |
+| Custo | Mais baixo | Mais alto |
+| Caso de uso | Conectividade básica | Aplicações críticas, alto volume |
+
+## Azure ExpressRoute
+Conexão privada dedicada entre rede local e Azure (não usa internet pública).
+
+- **Benefício:** Baixa latência consistente, alta segurança, alta largura de banda.
+- **Caso de uso:** Migrações em larga escala, aplicações críticas, backup/DR de dados massivos.
+- **Exemplo:** Banco precisa de conexão de 50 Mbps garantida e segura para sistema de core banking na nuvem.
+- **Custo:** Maior que VPN, mas justificável para aplicações críticas.
+
+---
+
+# Dicas para prova:
+- **IaaS (VMs):** Cliente gerencia SO e aplicação; Microsoft gerencia hardware.
+- **PaaS (App Service, Functions, Containers):** Cliente gerencia código; Microsoft gerencia infraestrutura.
+- **Scale Sets:** Para elasticidade (variação de demanda); **Availability Sets:** Para alta disponibilidade.
+- **VPN:** Conexão via internet criptografada; **ExpressRoute:** Linha privada dedicada.
+- Em provas, procure por palavras-chave: "sem gerenciar infraestrutura" (PaaS), "total controle" (IaaS).
+
+# Questões de exemplo para prova:
+1. Qual serviço permite hospedar uma aplicação web sem se preocupar com gerenciamento de infraestrutura?
+    - a) Máquinas Virtuais
+    - b) Azure App Service **(correta)**
+    - c) Azure Virtual Network
+    - d) Azure ExpressRoute
+    - Explicação: App Service é PaaS; você gerencia o código, Azure gerencia infraestrutura. VMs são IaaS (você gerencia SO).
+
+2. Qual é a diferença principal entre Conjuntos de Dimensionamento e Conjuntos de Disponibilidade?
+    - a) Scale Sets garantem alta disponibilidade; Availability Sets escalam automaticamente
+    - b) Scale Sets escalam automaticamente; Availability Sets garantem alta disponibilidade **(correta)**
+    - c) São a mesma coisa, nomes diferentes
+    - d) Ambos fazem escalabilidade e alta disponibilidade
+    - Explicação: Scale Sets = elasticidade (responder a picos); Availability Sets = tolerar falhas de hardware.
+
+3. Qual serviço oferece conexão privada dedicada entre rede local e Azure?
+    - a) VPN Site-to-Site
+    - b) Azure Virtual Network
+    - c) Azure ExpressRoute **(correta)**
+    - d) Gateway de VPN
+    - Explicação: ExpressRoute é linha privada; VPN usa internet criptografada. Para dados críticos, ExpressRoute é melhor.
+
+4. Qual modelo de serviço Azure Functions representa?
+    - a) IaaS
+    - b) PaaS **(correta)**
+    - c) SaaS
+    - d) DaaS
+    - Explicação: Functions é PaaS (serverless). Você escreve código; Azure gerencia escalabilidade, infraestrutura e cobrança por execução.
 
